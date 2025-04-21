@@ -5,3 +5,17 @@ function reportQuery(req, res, next) {
   }
   
   module.exports = { reportQuery }; 
+
+  function reportQuery(req, res, next) {
+    const start = Date.now();
+    res.on('finish', () => {
+      console.log({
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+        durationMs: Date.now() - start,
+        userAgent: req.headers['user-agent']
+      });
+    });
+    next();
+  }
